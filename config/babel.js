@@ -20,6 +20,7 @@ module.exports = function buildBabelPreset() {
       "@emotion/babel-preset-css-prop",
     ],
     plugins: [
+      "babel-plugin-idx",
       isProductionEnv && [
         "babel-plugin-transform-react-remove-prop-types",
         {

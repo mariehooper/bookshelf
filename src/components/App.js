@@ -1,5 +1,8 @@
 import { css, Global } from "@emotion/core";
-import React from "react";
+import React, { useState } from "react";
+import { Router, Link } from "@reach/router";
+import HomePage from "./HomePage";
+import SearchPage from "./SearchPage";
 
 const globalStyles = css`
   :root {
@@ -40,6 +43,10 @@ const globalStyles = css`
   *::before,
   *::after {
     box-sizing: inherit;
+  }
+
+  #app {
+    height: 100vh;
   }
 
   body {
@@ -85,16 +92,18 @@ const globalStyles = css`
 
 const headerStyles = css`
   align-items: center;
-  background: linear-gradient(
-    to right,
-    var(--color-dark-blue),
-    var(--color-blue)
-  );
-  box-shadow: var(--shadow-low);
-  color: var(--color-white);
+  background: transparent;
+  color: var(--color-blue);
   display: flex;
   justify-content: space-between;
   padding: var(--size-8) var(--size-24);
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+
+  [data-homepage] & {
+    color: var(--color-white);
+  }
 `;
 
 const logoStyles = css`
@@ -102,15 +111,40 @@ const logoStyles = css`
   font-family: var(--font-system-monospace);
   line-height: 1.6;
   margin: 0;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+`;
+
+const contentCss = css`
+  padding: var(--size-24);
+  height: 100vh;
 `;
 
 export default function App() {
+  const [searchValue, setSearchValue] = useState("");
   return (
     <React.Fragment>
       <Global styles={globalStyles} />
       <header css={headerStyles}>
-        <span css={logoStyles}>Bookshelf</span>
+        <span css={logoStyles}>
+          <Link to="/">Bookshelf</Link>
+        </span>
       </header>
+      <Router css={contentCss} component="main">
+        <HomePage
+          path="/"
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
+        <SearchPage
+          path="/search"
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
+      </Router>
     </React.Fragment>
   );
 }
