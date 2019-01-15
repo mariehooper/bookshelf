@@ -125,6 +125,7 @@ const contentCss = css`
 
 export default function App() {
   const [searchValue, setSearchValue] = useState("");
+  const [collection, setCollection] = useState([]);
   return (
     <React.Fragment>
       <Global styles={globalStyles} />
@@ -143,6 +144,8 @@ export default function App() {
           path="/search"
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          collection={collection}
+          setCollection={setCollection}
         />
       </Router>
     </React.Fragment>
