@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Router, Link } from "@reach/router";
 import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
+import MyCollectionPage from "./MyCollectionPage";
 
 const globalStyles = css`
   :root {
@@ -101,6 +102,12 @@ const headerStyles = css`
   width: 100%;
   z-index: 100;
 
+  a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+
   [data-homepage] & {
     color: var(--color-white);
   }
@@ -133,6 +140,7 @@ export default function App() {
         <span css={logoStyles}>
           <Link to="/">Bookshelf</Link>
         </span>
+        <Link to="/123">My Collection</Link>
       </header>
       <Router css={contentCss} component="main">
         <HomePage
@@ -147,6 +155,7 @@ export default function App() {
           collection={collection}
           setCollection={setCollection}
         />
+        <MyCollectionPage path="/:userId" collection={collection} />
       </Router>
     </React.Fragment>
   );
