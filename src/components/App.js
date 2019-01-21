@@ -1,5 +1,6 @@
+import firebase from "firebase/app";
 import { css, Global } from "@emotion/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Router, Link } from "@reach/router";
 import HomePage from "./HomePage";
 import SearchPage from "./SearchPage";
@@ -130,9 +131,51 @@ const contentCss = css`
   height: 100vh;
 `;
 
+const signInCss = css`
+  color: inherit;
+`;
+
 export default function App() {
   const [searchValue, setSearchValue] = useState("");
   const [collection, setCollection] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  function signOut() {
+    firebase.auth().signOut();
+    setCurrentUser(null);
+  }
+
+  function signIn({ email, displayName: name, photoURL: photoUrl, uid }) {
+    if (email === "marie.ashtari@gmail.com") {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(uid)
+        .set({ name, photoUrl });
+      setCurrentUser({ email, name, photoUrl, uid });
+    } else {
+      signOut();
+    }
+  }
+
+  async function signInWithGoogle() {
+    const google = new firebase.auth.GoogleAuthProvider();
+    const { user } = await firebase.auth().signInWithPopup(google);
+    signIn(user);
+  }
+
+  useEffect(
+    () =>
+      firebase.auth().onIdTokenChanged(user => {
+        if (user) {
+          signIn(user);
+        }
+        setLoading(false);
+      }),
+    [],
+  );
+
   return (
     <React.Fragment>
       <Global styles={globalStyles} />
@@ -140,23 +183,42 @@ export default function App() {
         <span css={logoStyles}>
           <Link to="/">Bookshelf</Link>
         </span>
-        <Link to="/123">My Collection</Link>
+        {!isLoading &&
+          (currentUser ? (
+            <div>
+              <Link to={`/${currentUser.uid}`}>My Collection</Link>
+              <button onClick={signOut} user={currentUser} type="button">
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <button css={signInCss} onClick={signInWithGoogle} type="button">
+              Sign in
+            </button>
+          ))}
       </header>
-      <Router css={contentCss} component="main">
-        <HomePage
-          path="/"
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-        />
-        <SearchPage
-          path="/search"
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          collection={collection}
-          setCollection={setCollection}
-        />
-        <MyCollectionPage path="/:userId" collection={collection} />
-      </Router>
+      {!isLoading && (
+        <Router css={contentCss} component="main">
+          <HomePage
+            path="/"
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+          />
+          <SearchPage
+            path="/search"
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            collection={collection}
+            setCollection={setCollection}
+            currentUser={currentUser}
+          />
+          <MyCollectionPage
+            path="/:userId"
+            collection={collection}
+            currentUser={currentUser}
+          />
+        </Router>
+      )}
     </React.Fragment>
   );
 }

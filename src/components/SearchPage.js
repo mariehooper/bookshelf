@@ -111,6 +111,7 @@ export default function SearchPage({
   setSearchValue,
   collection,
   setCollection,
+  currentUser,
 }) {
   const [searchResults, setSearchResults] = useState([]);
   const resultIds = useRef({});
@@ -174,33 +175,37 @@ export default function SearchPage({
                         dangerouslySetInnerHTML={snippet}
                       />
                     )}
-                    {!collection.find(book => book.id === result.id) ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setCollection([
-                            ...collection,
-                            {
-                              id: result.id,
-                              title,
-                              authors,
-                              thumbnail,
-                            },
-                          ]);
-                        }}
-                      >
-                        <svg className="add-outline" viewBox="0 0 32 32">
-                          <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z" />
-                        </svg>
-                        Add to collection
-                      </button>
-                    ) : (
-                      <p className="in-collection">
-                        <svg className="checkmark" viewBox="0 0 32 32">
-                          <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" />
-                        </svg>
-                        Added to collection
-                      </p>
+                    {currentUser && (
+                      <React.Fragment>
+                        {!collection.find(book => book.id === result.id) ? (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCollection([
+                                ...collection,
+                                {
+                                  id: result.id,
+                                  title,
+                                  authors,
+                                  thumbnail,
+                                },
+                              ]);
+                            }}
+                          >
+                            <svg className="add-outline" viewBox="0 0 32 32">
+                              <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z" />
+                            </svg>
+                            Add to collection
+                          </button>
+                        ) : (
+                          <p className="in-collection">
+                            <svg className="checkmark" viewBox="0 0 32 32">
+                              <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" />
+                            </svg>
+                            Added to collection
+                          </p>
+                        )}
+                      </React.Fragment>
                     )}
                   </div>
                 </li>
@@ -245,4 +250,10 @@ SearchPage.propTypes = {
       thumbnail: PropTypes.string,
     }),
   ).isRequired,
+  currentUser: PropTypes.shape({
+    uid: PropTypes.string,
+    email: PropTypes.string,
+    name: PropTypes.string,
+    photoUrl: PropTypes.string,
+  }).isRequired,
 };
