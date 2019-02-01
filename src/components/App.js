@@ -150,9 +150,8 @@ export default function App() {
     if (email === "marie.ashtari@gmail.com") {
       firebase
         .firestore()
-        .collection("users")
-        .doc(uid)
-        .set({ name, photoUrl });
+        .doc(`users/${uid}`)
+        .set({ name, photoUrl, uid });
       setCurrentUser({ email, name, photoUrl, uid });
     } else {
       signOut();
@@ -174,6 +173,23 @@ export default function App() {
         setLoading(false);
       }),
     [],
+  );
+
+  useEffect(
+    () => {
+      if (currentUser) {
+        return firebase
+          .firestore()
+          .collection(`users/${currentUser.uid}/books`)
+          .onSnapshot(query => {
+            const books = query.docs.map(doc => doc.data());
+            setCollection(books);
+          });
+      }
+      setCollection([]);
+      return undefined;
+    },
+    [currentUser],
   );
 
   return (
@@ -209,7 +225,6 @@ export default function App() {
             searchValue={searchValue}
             setSearchValue={setSearchValue}
             collection={collection}
-            setCollection={setCollection}
             currentUser={currentUser}
           />
           <MyCollectionPage

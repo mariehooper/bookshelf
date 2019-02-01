@@ -44,7 +44,7 @@ const booklistCss = css`
 
 export default function MyCollectionPage({ collection }) {
   const [localSearchVal, setLocalSearchVal] = useState("");
-  const [filteredCollection, setFilteredCollection] = useState(collection);
+  const [searchParam, setSearchParam] = useState("");
   return (
     <div>
       <h1>My Collection</h1>
@@ -53,19 +53,18 @@ export default function MyCollectionPage({ collection }) {
         onChange={setLocalSearchVal}
         onSubmit={event => {
           event.preventDefault();
-          const searchParam = new RegExp(localSearchVal.trim(), "i");
-          const searchFields = ["title", "authors"];
-          setFilteredCollection(
-            collection.filter(book =>
-              searchFields.some(searchField =>
-                searchParam.test(book[searchField]),
-              ),
-            ),
-          );
+          setSearchParam(localSearchVal.trim());
         }}
       />
       <ul css={booklistCss}>
-        {filteredCollection
+        {collection
+          .filter(book => {
+            const searchRegex = new RegExp(searchParam, "i");
+            return (
+              searchRegex.test(book.title) ||
+              book.authors.some(author => searchRegex.test(author))
+            );
+          })
           .sort((a, b) =>
             a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
           )

@@ -1,5 +1,6 @@
 import { css } from "@emotion/core";
 import axios from "axios";
+import firebase from "firebase/app";
 import idx from "idx";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
@@ -110,7 +111,6 @@ export default function SearchPage({
   searchValue,
   setSearchValue,
   collection,
-  setCollection,
   currentUser,
 }) {
   const [searchResults, setSearchResults] = useState([]);
@@ -181,15 +181,17 @@ export default function SearchPage({
                           <button
                             type="button"
                             onClick={() => {
-                              setCollection([
-                                ...collection,
-                                {
+                              firebase
+                                .firestore()
+                                .doc(
+                                  `users/${currentUser.uid}/books/${result.id}`,
+                                )
+                                .set({
                                   id: result.id,
                                   title,
                                   authors,
                                   thumbnail,
-                                },
-                              ]);
+                                });
                             }}
                           >
                             <svg className="add-outline" viewBox="0 0 32 32">
@@ -241,7 +243,6 @@ export default function SearchPage({
 SearchPage.propTypes = {
   setSearchValue: PropTypes.func.isRequired,
   searchValue: PropTypes.string.isRequired,
-  setCollection: PropTypes.func.isRequired,
   collection: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -255,5 +256,7 @@ SearchPage.propTypes = {
     email: PropTypes.string,
     name: PropTypes.string,
     photoUrl: PropTypes.string,
-  }).isRequired,
+  }),
 };
+
+SearchPage.defaultProps = { currentUser: null };
