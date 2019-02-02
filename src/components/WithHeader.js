@@ -3,6 +3,7 @@ import { Link } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useContext } from "react";
 import Context from "./Context";
+import UserMenu from "./UserMenu";
 
 const headerStyles = css`
   align-items: center;
@@ -15,10 +16,14 @@ const headerStyles = css`
   width: 100%;
   z-index: 100;
 
-  a {
+  button {
     color: inherit;
-    text-decoration: none;
-    font-size: 1rem;
+    font-size: var(--size-16);
+
+    &:hover,
+    :focus {
+      opacity: inherit;
+    }
   }
 `;
 
@@ -61,12 +66,7 @@ export default function WithHeader({ transparent, children }) {
         </span>
         {!isLoading &&
           (currentUser ? (
-            <div>
-              <Link to={`/${currentUser.uid}`}>My Collection</Link>
-              <button onClick={signOut} user={currentUser} type="button">
-                Sign out
-              </button>
-            </div>
+            <UserMenu user={currentUser} signOut={signOut} />
           ) : (
             <button css={signInCss} onClick={signInWithGoogle} type="button">
               Sign in

@@ -11,6 +11,7 @@ const booklistCss = css`
   list-style-type: none;
 
   li {
+    background-color: var(--color-white);
     box-shadow: 0 2px 4px 0 rgba(50, 50, 93, 0.1);
     margin: 0.5rem;
     width: 200px;

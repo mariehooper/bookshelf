@@ -12,6 +12,7 @@ const globalStyles = css`
     --color-blue: #243b55;
     --color-dark-blue: #141e30;
     --color-white: #fff;
+    --color-light-gray: #f8fafb;
     --color-blue-gray: #eceff1;
     --color-gray: #757575;
     --color-black: #424242;
@@ -49,8 +50,10 @@ const globalStyles = css`
   }
 
   body {
-    background-color: var(--color-white);
+    background-color: var(--color-light-gray);
     color: var(--color-black);
+    display: flex;
+    flex-direction: column;
     font-family: var(--font-system);
     font-size: var(--size-14);
     line-height: 1.42858;
