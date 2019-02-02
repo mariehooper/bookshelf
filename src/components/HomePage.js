@@ -3,15 +3,14 @@ import { navigate } from "@reach/router";
 import PropTypes from "prop-types";
 import React, { useEffect } from "react";
 import Search from "./Search";
+import WithHeader from "./WithHeader";
 
 const wrapperCss = css`
   background-image: url("./susan-yin-647448-unsplash.jpg");
   background-size: cover;
   display: flex;
-  height: calc(100% + 48px);
-  width: calc(100% + 48px);
-  margin-left: -24px;
-  margin-top: -24px;
+  height: 100vh;
+  width: 100vw;
 `;
 
 const overlayCss = css`
@@ -22,7 +21,7 @@ const overlayCss = css`
 `;
 
 const frameCss = css`
-  margin: 200px auto 0 auto;
+  margin: 10rem auto 0 auto;
   width: 50%;
 
   h1 {
@@ -37,28 +36,26 @@ const frameCss = css`
 export default function HomePage({ searchValue, setSearchValue }) {
   useEffect(() => {
     setSearchValue("");
-    document.getElementById("app").dataset.homepage = "";
-    return () => {
-      delete document.getElementById("app").dataset.homepage;
-    };
   }, []);
 
   return (
     <div css={wrapperCss} className="wrapper">
       <div css={overlayCss}>
-        <div css={frameCss}>
-          <h1>Add a book to your collection</h1>
-          <div>
-            <Search
-              value={searchValue}
-              onChange={setSearchValue}
-              onSubmit={event => {
-                event.preventDefault();
-                navigate(`/search`);
-              }}
-            />
+        <WithHeader transparent>
+          <div css={frameCss}>
+            <h1>Add a book to your collection</h1>
+            <div>
+              <Search
+                value={searchValue}
+                onChange={setSearchValue}
+                onSubmit={event => {
+                  event.preventDefault();
+                  navigate(`/search`);
+                }}
+              />
+            </div>
           </div>
-        </div>
+        </WithHeader>
       </div>
     </div>
   );

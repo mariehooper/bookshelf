@@ -5,6 +5,7 @@ import idx from "idx";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import Search from "./Search";
+import WithHeader from "./WithHeader";
 
 const searchResultCss = css`
   padding-left: 0;
@@ -135,7 +136,7 @@ export default function SearchPage({
   }, []);
 
   return (
-    <React.Fragment>
+    <WithHeader>
       <h1>Search Books</h1>
       <Search
         value={searchValue}
@@ -236,7 +237,7 @@ export default function SearchPage({
           </button>
         </React.Fragment>
       )}
-    </React.Fragment>
+    </WithHeader>
   );
 }
 

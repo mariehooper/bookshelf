@@ -1,10 +1,11 @@
-import firebase from "firebase/app";
 import { css, Global } from "@emotion/core";
-import React, { useState, useEffect } from "react";
-import { Router, Link } from "@reach/router";
+import { Router } from "@reach/router";
+import firebase from "firebase/app";
+import React, { useEffect, useState } from "react";
+import Context from "./Context";
 import HomePage from "./HomePage";
-import SearchPage from "./SearchPage";
 import MyCollectionPage from "./MyCollectionPage";
+import SearchPage from "./SearchPage";
 
 const globalStyles = css`
   :root {
@@ -47,10 +48,6 @@ const globalStyles = css`
     box-sizing: inherit;
   }
 
-  #app {
-    height: 100vh;
-  }
-
   body {
     background-color: var(--color-white);
     color: var(--color-black);
@@ -90,49 +87,6 @@ const globalStyles = css`
       opacity: 0.7;
     }
   }
-`;
-
-const headerStyles = css`
-  align-items: center;
-  background: transparent;
-  color: var(--color-blue);
-  display: flex;
-  justify-content: space-between;
-  padding: var(--size-8) var(--size-24);
-  position: absolute;
-  width: 100%;
-  z-index: 100;
-
-  a {
-    color: inherit;
-    text-decoration: none;
-    font-size: 1rem;
-  }
-
-  [data-homepage] & {
-    color: var(--color-white);
-  }
-`;
-
-const logoStyles = css`
-  font-size: var(--size-20);
-  font-family: var(--font-system-monospace);
-  line-height: 1.6;
-  margin: 0;
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-`;
-
-const contentCss = css`
-  padding: var(--size-24);
-  height: 100vh;
-`;
-
-const signInCss = css`
-  color: inherit;
 `;
 
 export default function App() {
@@ -193,28 +147,12 @@ export default function App() {
   );
 
   return (
-    <React.Fragment>
+    <Context.Provider
+      value={{ isLoading, currentUser, signInWithGoogle, signOut }}
+    >
       <Global styles={globalStyles} />
-      <header css={headerStyles}>
-        <span css={logoStyles}>
-          <Link to="/">Bookshelf</Link>
-        </span>
-        {!isLoading &&
-          (currentUser ? (
-            <div>
-              <Link to={`/${currentUser.uid}`}>My Collection</Link>
-              <button onClick={signOut} user={currentUser} type="button">
-                Sign out
-              </button>
-            </div>
-          ) : (
-            <button css={signInCss} onClick={signInWithGoogle} type="button">
-              Sign in
-            </button>
-          ))}
-      </header>
       {!isLoading && (
-        <Router css={contentCss} component="main">
+        <Router>
           <HomePage
             path="/"
             searchValue={searchValue}
@@ -234,6 +172,6 @@ export default function App() {
           />
         </Router>
       )}
-    </React.Fragment>
+    </Context.Provider>
   );
 }

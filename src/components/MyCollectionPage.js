@@ -2,6 +2,7 @@ import { css } from "@emotion/core";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import Search from "./Search";
+import WithHeader from "./WithHeader";
 
 const booklistCss = css`
   display: flex;
@@ -46,7 +47,7 @@ export default function MyCollectionPage({ collection }) {
   const [localSearchVal, setLocalSearchVal] = useState("");
   const [searchParam, setSearchParam] = useState("");
   return (
-    <div>
+    <WithHeader>
       <h1>My Collection</h1>
       <Search
         value={localSearchVal}
@@ -89,7 +90,7 @@ export default function MyCollectionPage({ collection }) {
             );
           })}
       </ul>
-    </div>
+    </WithHeader>
   );
 }
 
