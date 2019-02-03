@@ -21,7 +21,7 @@ const searchResultCss = css`
     box-shadow: 0 2px 4px 0 rgba(50, 50, 93, 0.1);
     background-color: white;
     padding: 0.25rem;
-    border-radius: 0.4rem;
+    border-radius: 3px;
     flex: 0 0 auto;
   }
 
@@ -66,27 +66,25 @@ const searchResultCss = css`
     min-height: 60px;
   }
 
-  button,
-  .in-collection {
-    margin-left: auto;
-    display: block;
-    padding: 0.25rem 0.5rem;
-    color: #7f47cb;
-  }
-
-  .add-outline,
-  .checkmark {
-    width: 10px;
-    height: 10px;
-    margin-right: 0.25rem;
-    vertical-align: baseline;
-    fill: currentColor;
-  }
-
   .in-collection {
     color: #47c34c;
     text-align: right;
   }
+`;
+
+const actionCss = css`
+  margin-left: auto;
+  display: block;
+  padding: 0.25rem 0.5rem;
+  color: #7f47cb;
+`;
+
+const iconCss = css`
+  width: 10px;
+  height: 10px;
+  margin-right: 0.25rem;
+  vertical-align: baseline;
+  fill: currentColor;
 `;
 
 const buttonCss = css`
@@ -180,6 +178,7 @@ export default function SearchPage({
                       <React.Fragment>
                         {!collection.find(book => book.id === result.id) ? (
                           <button
+                            css={actionCss}
                             type="button"
                             onClick={() => {
                               firebase
@@ -195,14 +194,14 @@ export default function SearchPage({
                                 });
                             }}
                           >
-                            <svg className="add-outline" viewBox="0 0 32 32">
+                            <svg css={iconCss} viewBox="0 0 32 32">
                               <path d="M31 12h-11v-11c0-0.552-0.448-1-1-1h-6c-0.552 0-1 0.448-1 1v11h-11c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1h11v11c0 0.552 0.448 1 1 1h6c0.552 0 1-0.448 1-1v-11h11c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1z" />
                             </svg>
                             Add to collection
                           </button>
                         ) : (
-                          <p className="in-collection">
-                            <svg className="checkmark" viewBox="0 0 32 32">
+                          <p className="in-collection" css={actionCss}>
+                            <svg css={iconCss} viewBox="0 0 32 32">
                               <path d="M27 4l-15 15-7-7-5 5 12 12 20-20z" />
                             </svg>
                             Added to collection

@@ -12,7 +12,7 @@ const globalStyles = css`
     --color-blue: #243b55;
     --color-dark-blue: #141e30;
     --color-white: #fff;
-    --color-light-gray: #f8fafb;
+    --color-light-gray: #fbfbfb;
     --color-blue-gray: #eceff1;
     --color-gray: #757575;
     --color-black: #424242;
