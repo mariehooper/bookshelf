@@ -200,7 +200,8 @@
             "css-appearance",
             "css-gradients",
             "text-size-adjust",
-            "object-fit"
+            "object-fit",
+            "css-filters"
           ]
         }
       ],

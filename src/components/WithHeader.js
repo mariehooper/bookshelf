@@ -9,7 +9,6 @@ const headerStyles = css`
   align-items: center;
   background: var(--color-white);
   border-bottom: 1px solid rgb(228, 228, 228);
-  color: var(--color-blue);
   display: flex;
   justify-content: space-between;
   padding: var(--size-8) var(--size-24);
@@ -36,7 +35,7 @@ const transparentStyles = css`
 
 const logoStyles = css`
   font-size: var(--size-20);
-  font-family: var(--font-system-monospace);
+  font-family: "Rubik", sans-serif;
   line-height: 1.6;
   margin: 0;
 

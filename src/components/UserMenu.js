@@ -5,16 +5,16 @@ import React, { useRef, useState } from "react";
 
 const menuStyles = css`
   position: absolute;
-  background-color: white;
+  background-color: var(--color-white);
   color: var(--color-black);
   list-style-type: none;
   width: 180px;
   right: 0;
-  border-radius: 3px;
+  border-radius: var(--size-3);
   border: 1px solid #eee;
   box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
-  padding: 0.25rem 0;
-  margin: 1rem;
+  padding: var(--size-4) 0;
+  margin: var(--size-16);
   z-index: 1;
 
   &::before {
@@ -22,9 +22,9 @@ const menuStyles = css`
     display: inline-block;
     position: absolute;
     left: auto;
-    right: 1rem;
+    right: var(--size-16);
     top: -1rem;
-    border: 0.5rem solid transparent;
+    border: var(--size-8) solid transparent;
     border-bottom-color: var(--color-white);
   }
 
@@ -42,7 +42,7 @@ const menuStyles = css`
     display: block;
     color: inherit;
     font-size: var(--size-16);
-    padding: 0.5rem 1rem;
+    padding: var(--size-8) var(--size-16);
 
     &:hover,
     :focus {

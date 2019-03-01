@@ -16,17 +16,17 @@ const searchResultCss = css`
     list-style-type: none;
     display: flex;
     align-items: flex-start;
-    margin: 0.5rem;
+    margin: var(--size-8);
     width: 48%;
     box-shadow: 0 2px 4px 0 rgba(50, 50, 93, 0.1);
-    background-color: white;
-    padding: 0.25rem;
-    border-radius: 3px;
+    background-color: var(--color-white);
+    padding: var(--size-4);
+    border-radius: var(--size-3);
     flex: 0 0 auto;
   }
 
   img {
-    margin-right: 0.5rem;
+    margin-right: var(--size-8);
     object-fit: contain;
     width: 120px;
     height: 120px;
@@ -41,48 +41,48 @@ const searchResultCss = css`
     flex: 1;
   }
 
-  .title {
-    font-size: 1rem;
-    font-weight: 600;
-    /* stylelint-disable-next-line value-no-vendor-prefix */
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
   .author {
     font-style: italic;
   }
+`;
 
-  .description {
-    /* stylelint-disable-next-line value-no-vendor-prefix */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    /* stylelint-disable-next-line property-no-vendor-prefix */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    min-height: 60px;
-  }
+const titleCss = css`
+  font-size: var(--size-16);
+  font-weight: 600;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
 
-  .in-collection {
-    color: #47c34c;
-    text-align: right;
-  }
+const descriptionCss = css`
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 60px;
 `;
 
 const actionCss = css`
   margin-left: auto;
   display: block;
-  padding: 0.25rem 0.5rem;
+  padding: var(--size-4) var(--size-8);
   color: #7f47cb;
+
+  &.in-collection {
+    color: #47c34c;
+    text-align: right;
+  }
 `;
 
 const iconCss = css`
   width: 10px;
   height: 10px;
-  margin-right: 0.25rem;
+  margin-right: var(--size-4);
   vertical-align: baseline;
   fill: currentColor;
 `;
@@ -92,11 +92,11 @@ const buttonCss = css`
   display: block;
   height: 40px;
   line-height: 40px;
-  padding: 0 14px;
+  padding: 0 var(--size-14);
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-  background: #fff;
-  border-radius: 4px;
-  font-size: 15px;
+  background: var(--color-white);
+  border-radius: var(--size-4);
+  font-size: var(--size-14);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.025em;
@@ -139,10 +139,7 @@ export default function SearchPage({
       <Search
         value={searchValue}
         onChange={setSearchValue}
-        onSubmit={event => {
-          event.preventDefault();
-          queryBooks();
-        }}
+        onSubmit={queryBooks}
       />
       {searchResults.length > 0 && (
         <React.Fragment>
@@ -161,7 +158,7 @@ export default function SearchPage({
                 <li key={result.id}>
                   <img src={thumbnail} alt={`${title} front cover`} />
                   <div className="search-result">
-                    {title && <span className="title">{title}</span>}
+                    {title && <span css={titleCss}>{title}</span>}
                     {authors && (
                       <span className="author">
                         {authors && authors.join(", ")}
@@ -169,7 +166,7 @@ export default function SearchPage({
                     )}
                     {snippet && (
                       <span
-                        className="description"
+                        css={descriptionCss}
                         // eslint-disable-next-line react/no-danger
                         dangerouslySetInnerHTML={snippet}
                       />

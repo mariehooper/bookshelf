@@ -4,7 +4,7 @@ import firebase from "firebase/app";
 import React, { useEffect, useState } from "react";
 import Context from "./Context";
 import HomePage from "./HomePage";
-import MyCollectionPage from "./MyCollectionPage";
+import CollectionPage from "./CollectionPage";
 import SearchPage from "./SearchPage";
 
 const globalStyles = css`
@@ -20,8 +20,6 @@ const globalStyles = css`
     --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
       Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
       "Segoe UI Symbol";
-    --font-system-monospace: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
-      Courier, monospace;
     --shadow-low: 0 1px 2px rgba(43, 59, 93, 0.29);
     --shadow-high: 0 0 1px rgba(76, 86, 103, 0.25),
       0 2px 18px rgba(31, 37, 50, 0.32);
@@ -58,6 +56,12 @@ const globalStyles = css`
     font-size: var(--size-14);
     line-height: 1.42858;
     margin: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Rubik", sans-serif;
   }
 
   p {
@@ -132,22 +136,19 @@ export default function App() {
     [],
   );
 
-  useEffect(
-    () => {
-      if (currentUser) {
-        return firebase
-          .firestore()
-          .collection(`users/${currentUser.uid}/books`)
-          .onSnapshot(query => {
-            const books = query.docs.map(doc => doc.data());
-            setCollection(books);
-          });
-      }
-      setCollection([]);
-      return undefined;
-    },
-    [currentUser],
-  );
+  useEffect(() => {
+    if (currentUser) {
+      return firebase
+        .firestore()
+        .collection(`users/${currentUser.uid}/books`)
+        .onSnapshot(query => {
+          const books = query.docs.map(doc => doc.data());
+          setCollection(books);
+        });
+    }
+    setCollection([]);
+    return undefined;
+  }, [currentUser]);
 
   return (
     <Context.Provider
@@ -168,7 +169,7 @@ export default function App() {
             collection={collection}
             currentUser={currentUser}
           />
-          <MyCollectionPage
+          <CollectionPage
             path="/:userId"
             collection={collection}
             currentUser={currentUser}

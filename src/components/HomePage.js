@@ -29,7 +29,7 @@ const frameCss = css`
     font-size: 2.5rem;
     font-weight: 400;
     text-shadow: 1px 6px 84px rgba(0, 0, 0, 0.8);
-    margin: 1rem 0;
+    margin: var(--size-16) 0;
   }
 `;
 
@@ -39,7 +39,7 @@ export default function HomePage({ searchValue, setSearchValue }) {
   }, []);
 
   return (
-    <div css={wrapperCss} className="wrapper">
+    <div css={wrapperCss}>
       <div css={overlayCss}>
         <WithHeader transparent>
           <div css={frameCss}>
@@ -48,8 +48,7 @@ export default function HomePage({ searchValue, setSearchValue }) {
               <Search
                 value={searchValue}
                 onChange={setSearchValue}
-                onSubmit={event => {
-                  event.preventDefault();
+                onSubmit={() => {
                   navigate(`/search`);
                 }}
               />
